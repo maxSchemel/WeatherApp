@@ -248,6 +248,12 @@ files:
 - name: web/instance/weather.db
   visible: true
   learner_created: true
+- name: instance/weather.db
+  visible: true
+  learner_created: true
 feedback_link: https://hyperskill.org/learn/step/12328#comment
-status: Unchecked
-record: -1
+status: Solved
+feedback:
+  message: Congratulations!
+  time: "Wed, 24 May 2023 06:14:07 UTC"
+record: 4

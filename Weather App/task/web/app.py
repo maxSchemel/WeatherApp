@@ -6,8 +6,7 @@ app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///weather.db"
 db = SQLAlchemy(app)
 
-
-class City(db.Model):
+class city(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), unique=True)
     state = db.Column(db.String(40))
@@ -18,19 +17,22 @@ class City(db.Model):
         self.state = state
         self.temperature = temperature
 
+with app.app_context():
+    db.create_all()
+
 #View Functions
 @app.route('/')
 def index():
-    weathers = City.query.all()
+    weathers = city.query.all()
     return render_template('index.html', City=weathers)
 
 @app.route('/add', methods=['GET', 'POST'])
 def load_city():
     if request.method == 'POST':
-        if City.query.filter(City.name == request.form["city_name"]).first():
-            print('already in database')
+        if city.query.filter(city.name == request.form["city_name"]).first():
             return redirect(url_for('index'))
-        city_weather = City(request.form["city_name"], "Warm", 25)
+        print(f"City {request.form['city_name']} is added to database")
+        city_weather = city(request.form["city_name"], "Warm", 25)
         db.session.add(city_weather)
         db.session.commit()
         return redirect(url_for('index'))
