@@ -242,13 +242,10 @@ files:
 - name: web/database.py
   visible: true
   learner_created: true
-- name: web/models.py
-  visible: true
-  learner_created: true
 - name: web/initdb.py
   visible: true
   learner_created: true
-- name: web/project.db
+- name: web/instance/weather.db
   visible: true
   learner_created: true
 feedback_link: https://hyperskill.org/learn/step/12328#comment

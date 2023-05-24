@@ -1,39 +1,41 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 import sys
 
 app = Flask(__name__)
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///project.db"
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///weather.db"
 db = SQLAlchemy(app)
 
 
-class CityWeather(db.Model):
+class City(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    city_name = db.Column(db.String(50), unique=True)
+    name = db.Column(db.String(50), unique=True)
     state = db.Column(db.String(40))
     temperature = db.Column(db.Integer)
 
-    def __init__(self, city_name, state, temperature):
-        self.city_name = city_name
+    def __init__(self, name, state, temperature):
+        self.name = name
         self.state = state
         self.temperature = temperature
 
 #View Functions
 @app.route('/')
 def index():
-    return render_template('index.html')
+    weathers = City.query.all()
+    return render_template('index.html', City=weathers)
 
 @app.route('/add', methods=['GET', 'POST'])
 def load_city():
     if request.method == 'POST':
-        if db.session.query(db.exists().where(CityWeather.city_name==request.form["city_name"])):
-            return render_template('index.html')
-        city_weather = CityWeather(request.form["city_name"], "Warm", 25)
+        if City.query.filter(City.name == request.form["city_name"]).first():
+            print('already in database')
+            return redirect(url_for('index'))
+        city_weather = City(request.form["city_name"], "Warm", 25)
         db.session.add(city_weather)
         db.session.commit()
-        return render_template('index.html')
+        return redirect(url_for('index'))
     if request.method == 'GET':
-        return render_template('index.html')
+        return redirect(url_for('index'))
 
 
 # don't change the following way to run flask:
