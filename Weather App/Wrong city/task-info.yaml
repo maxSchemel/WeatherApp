@@ -372,6 +372,32 @@ files:
         Base.metadata.create_all(bind=engine)
 
   learner_created: true
+- name: instance/weather.db
+  visible: true
+  learner_created: true
+- name: web/weatherAPI.py
+  visible: true
+  learner_created: true
 feedback_link: https://hyperskill.org/learn/step/12329#comment
-status: Unchecked
+status: Failed
+feedback:
+  message: |
+    Wrong answer in test #6
+
+    If the user tires to add a city that is already was added you should print "The city doesn't exist!"
+
+    Please find below the output of your program during this failed test.
+
+    ---
+
+    stdout:
+    * Serving Flask app 'app'
+     * Debug mode: off
+    City London is added to database
+    City Fairbanks is added to database
+    City Idaho is added to database
+    City The city that doesn't exist! is added to database
+
+    stderr:
+  time: "Thu, 25 May 2023 05:21:06 UTC"
 record: -1
